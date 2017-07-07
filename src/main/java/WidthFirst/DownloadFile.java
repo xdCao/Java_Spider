@@ -46,6 +46,9 @@ public class DownloadFile {
     public String downFile(String url){
         String filePath=null;
         CloseableHttpClient httpClient= HttpClients.createDefault();
+        if (url.contains("<span")){
+            return null;
+        }
         HttpGet httpGet=new HttpGet(url);
         RequestConfig requestConfig=RequestConfig.custom().setConnectionRequestTimeout(5000).setConnectTimeout(1000)
                 .setSocketTimeout(5000).build();

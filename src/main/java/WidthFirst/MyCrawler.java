@@ -16,7 +16,7 @@ public class MyCrawler {
     public void crawing(String[] seeds){
         LinkFilter filter=new LinkFilter() {
             public boolean accept(String url) {
-                if (url.startsWith("http://www.baidu.com"))
+                if (url.startsWith("http://www.sina.com"))
                     return true;
                 else
                     return false;
@@ -41,7 +41,7 @@ public class MyCrawler {
 
     public static void main(String[] args){
         MyCrawler crawler=new MyCrawler();
-        crawler.crawing(new String[]{"http://www.baidu.com"});
+        crawler.crawing(new String[]{"http://www.sina.com"});
     }
 
 }
