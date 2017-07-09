@@ -9,6 +9,8 @@ public class NoticeInformation {
 
     private String link;
 
+    private String content;
+
     public String getLink() {
         return link;
     }
@@ -25,8 +27,16 @@ public class NoticeInformation {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
-        return title+", "+link;
+        return title+", "+link+"\n"+content+"\n\n";
     }
 }

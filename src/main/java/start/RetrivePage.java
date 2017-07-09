@@ -46,7 +46,7 @@ public class RetrivePage {
     }
 
     public static void main(String[] args){
-        RetrivePage.downloadPage("http://gr.xidian.edu.cn/tzgg1.htm");
+        RetrivePage.downloadPage("http://gr.xidian.edu.cn/info/1073/5264.htm");
     }
 
 
