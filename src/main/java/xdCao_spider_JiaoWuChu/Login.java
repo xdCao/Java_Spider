@@ -5,6 +5,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
@@ -20,6 +21,7 @@ import org.apache.http.impl.cookie.BrowserCompatSpecFactory;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -35,38 +37,45 @@ public class Login {
 
     private static CloseableHttpClient httpClient= HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 
-    public void login() throws IOException {
+    public void login(String username,String password) throws IOException {
 
-        String loginUrl1="http://ids.xidian.edu.cn/authserver/login?service=http%3A%2F%2Fyjsxt.xidian.edu.cn%2Flogin.jsp";
+        String authUrl="http://ids.xidian.edu.cn/authserver/login?service=http%3A%2F%2Fjwxt.xidian.edu.cn%2Fcaslogin.jsp";
 
-
-        HttpPost httpPost1=new HttpPost(loginUrl1);
-
-        List<NameValuePair> data=new ArrayList<NameValuePair>();
-
-        data.add(new BasicNameValuePair("username","1601120078"));
-        data.add(new BasicNameValuePair("password","208037"));
+        String loginUrl="ttp://jwxt.xidian.edu.cn/caslogin.jsp";
 
 
-        CloseableHttpResponse httpResponse1 = httpClient.execute(httpPost1);
-        printResponse(httpResponse1);
-//        String newUrl=httpResponse1.getFirstHeader("Location").getValue();
+        HttpGet httpGet=new HttpGet(authUrl);
+        CloseableHttpResponse response = httpClient.execute(httpGet);
+//        String data= EntityUtils.toString(response.getEntity());
 
-        setCookieStoreFirstTime(httpResponse1);
+        printResponse(response);
 
 
-//        HttpPost httpPost2=new HttpPost(dataUrl);
-//        httpPost2.setEntity(new UrlEncodedFormEntity(data));
-//        CloseableHttpResponse httpResponse2 = httpClient.execute(httpPost2);
-//        printResponse(httpResponse2);
-
-//        setCookieStoreSecondTime(httpResponse2);
-
-        String url1="http://ids.xidian.edu.cn/authserver/login;jsessionid=w6EnuYfr0-iqgEyzfV0zxch8Ml4xHq7sBAy0GjnfyWTx5OZvs-74!-258421689?service=http%3A%2F%2Fyjsxt.xidian.edu.cn%2Flogin.jsp";
-        HttpPost httpPost=new HttpPost(url1);
-        httpPost.setEntity(new UrlEncodedFormEntity(data));
-        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
-        printResponse(httpResponse);
+//        List<NameValuePair> data=new ArrayList<NameValuePair>();
+//
+//        data.add(new BasicNameValuePair("username","1601120078"));
+//        data.add(new BasicNameValuePair("password","208037"));
+//
+//
+//        CloseableHttpResponse httpResponse1 = httpClient.execute(httpPost1);
+//        printResponse(httpResponse1);
+////        String newUrl=httpResponse1.getFirstHeader("Location").getValue();
+//
+//        setCookieStoreFirstTime(httpResponse1);
+//
+//
+////        HttpPost httpPost2=new HttpPost(dataUrl);
+////        httpPost2.setEntity(new UrlEncodedFormEntity(data));
+////        CloseableHttpResponse httpResponse2 = httpClient.execute(httpPost2);
+////        printResponse(httpResponse2);
+//
+////        setCookieStoreSecondTime(httpResponse2);
+//
+//        String url1="http://ids.xidian.edu.cn/authserver/login;jsessionid=w6EnuYfr0-iqgEyzfV0zxch8Ml4xHq7sBAy0GjnfyWTx5OZvs-74!-258421689?service=http%3A%2F%2Fyjsxt.xidian.edu.cn%2Flogin.jsp";
+//        HttpPost httpPost=new HttpPost(url1);
+//        httpPost.setEntity(new UrlEncodedFormEntity(data));
+//        CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
+//        printResponse(httpResponse);
 
 
     }
@@ -203,7 +212,7 @@ public class Login {
 
     public static void main(String[] args) throws IOException {
         Login login=new Login();
-        login.login();
+        login.login("1601120078","208037");
     }
 
 }
