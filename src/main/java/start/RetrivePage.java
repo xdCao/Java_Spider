@@ -1,10 +1,10 @@
+package start;
+
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import sun.net.www.http.HttpClient;
 
 import java.io.*;
 
@@ -46,7 +46,7 @@ public class RetrivePage {
     }
 
     public static void main(String[] args){
-        RetrivePage.downloadPage("http://www.baidu.com");
+        RetrivePage.downloadPage("http://gr.xidian.edu.cn/tzgg1.htm");
     }
 
 

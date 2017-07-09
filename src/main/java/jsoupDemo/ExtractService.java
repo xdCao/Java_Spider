@@ -1,4 +1,4 @@
-package Demo1;
+package jsoupDemo;
 
 import org.apache.http.util.TextUtils;
 import org.jsoup.Connection;
@@ -105,7 +105,7 @@ public class ExtractService {
     }
 
     public static void main(String[] args){
-        Rule rule=new Rule("http://jwc.xidian.edu.cn/info/1070/5113.htm",null,null,Rule.CLASS,"titlestyle49757", Demo1.Rule.GET);
+        Rule rule=new Rule("http://gr.xidian.edu.cn/tzgg1.htm",null,null,-1,"", jsoupDemo.Rule.GET);
 
         List<LinkTypeData> extracts= ExtractService.extract(rule);
 
@@ -115,14 +115,14 @@ public class ExtractService {
         }
 
 
-        Rule rule2=new Rule("http://jwc.xidian.edu.cn/info/1070/5113.htm",null,null,Rule.CLASS,"contentstyle49757", Demo1.Rule.GET);
-
-        List<LinkTypeData> extracts2= ExtractService.extract(rule2);
-
-        for (LinkTypeData data:extracts2){
-            System.out.println(data.getLinkText());
-
-        }
+//        Rule rule2=new Rule("http://gr.xidian.edu.cn/tzgg1.htm",null,null,Rule.CLASS,"contentstyle49757", jsoupDemo.Rule.GET);
+//
+//        List<LinkTypeData> extracts2= ExtractService.extract(rule2);
+//
+//        for (LinkTypeData data:extracts2){
+//            System.out.println(data.getLinkText());
+//
+//        }
 
     }
 

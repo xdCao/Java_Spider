@@ -1,6 +1,6 @@
-import Demo1.ExtractService;
-import Demo1.LinkTypeData;
-import Demo1.Rule;
+import jsoupDemo.ExtractService;
+import jsoupDemo.LinkTypeData;
+import jsoupDemo.Rule;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,10 +9,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import org.junit.Test;
-import sun.net.www.http.HttpClient;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -32,7 +30,7 @@ public class Test1 {
 
     @Test
     public void test2(){
-        Rule rule=new Rule("http://news.baidu.com/ns",new String[]{"word"},new String[]{"支付宝"},-1,null, Demo1.Rule.GET);
+        Rule rule=new Rule("http://news.baidu.com/ns",new String[]{"word"},new String[]{"支付宝"},-1,null, jsoupDemo.Rule.GET);
 
         List<LinkTypeData> extracts= ExtractService.extract(rule);
 
