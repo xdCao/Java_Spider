@@ -14,8 +14,12 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 /**
  * Created by xdcao on 2017/7/9.
@@ -33,26 +37,31 @@ public class NoticeInformationPageProcessor implements PageProcessor {
         page.addTargetRequests(page.getHtml().links().regex("http://gr\\.xidian\\.edu\\.cn/tzgg1/.\\.htm").all());
         List<String> allTitle = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/a/text()").all();
         List<String> allLinks = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/a/@href").all();
+        List<String> allDates = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/span").all();
 
-//        System.out.println(allLinks);
+
         List<NoticeInformation> informationList=new ArrayList<NoticeInformation>();
 
-        for (int i=0;i<allTitle.size();i++){
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+
+        for (int i=0;i<allTitle.size();i++) {
             try {
-                NoticeInformation noticeInformation=new NoticeInformation();
+                NoticeInformation noticeInformation = new NoticeInformation();
                 noticeInformation.setTitle(allTitle.get(i));
-                noticeInformation.setLink(allLinks.get(i).replaceAll(".*info","http://gr.xidian.edu.cn/info"));
-                HttpGet httpGet=new HttpGet(noticeInformation.getLink());
+                noticeInformation.setLink(allLinks.get(i).replaceAll(".*info", "http://gr.xidian.edu.cn/info"));
+                noticeInformation.setDate(formatter.parse(allDates.get(i).substring(13, 23)));
+                HttpGet httpGet = new HttpGet(noticeInformation.getLink());
                 CloseableHttpResponse response = httpClient.execute(httpGet);
-                String content= EntityUtils.toString(response.getEntity(),"utf-8");
+                String content = EntityUtils.toString(response.getEntity(), "utf-8");
                 noticeInformation.setContent(content);
                 informationList.add(noticeInformation);
                 System.out.println(noticeInformation);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
+
 
     }
 

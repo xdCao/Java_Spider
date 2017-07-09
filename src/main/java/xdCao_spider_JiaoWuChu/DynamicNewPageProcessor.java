@@ -10,6 +10,7 @@ import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +28,24 @@ public class DynamicNewPageProcessor implements PageProcessor {
         page.addTargetRequests(page.getHtml().links().regex("http://gr\\.xidian\\.edu\\.cn/zxdt.*\\.htm").all());
         List<String> allTitle = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/a/text()").all();
         List<String> allLinks = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/a/@href").all();
+        List<String> allDates = page.getHtml().xpath("//div[@class='main-right-list']/ul/li/span").all();
 
         List<DynamicNews> newsList=new ArrayList<DynamicNews>();
+
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
 
         for (int i=0;i<allTitle.size();i++){
             try {
                 DynamicNews dynamicNews=new DynamicNews();
                 dynamicNews.setTitle(allTitle.get(i));
                 dynamicNews.setLink(allLinks.get(i).replaceAll(".*info","http://gr.xidian.edu.cn/info"));
+                dynamicNews.setDate(formatter.parse(allDates.get(i).substring(13, 23)));
                 HttpGet httpGet=new HttpGet(dynamicNews.getLink());
                 CloseableHttpResponse response = httpClient.execute(httpGet);
                 String content= EntityUtils.toString(response.getEntity(),"utf-8");
                 dynamicNews.setContent(content);
                 newsList.add(dynamicNews);
-                System.out.println(dynamicNews);
+                System.out.println(dynamicNews.getDate());
             }catch (Exception e){
                 e.printStackTrace();
             }

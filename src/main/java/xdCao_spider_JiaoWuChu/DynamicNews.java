@@ -1,5 +1,7 @@
 package xdCao_spider_JiaoWuChu;
 
+import java.util.Date;
+
 /**
  * Created by xdcao on 2017/7/9.
  */
@@ -10,6 +12,19 @@ public class DynamicNews {
     private String link;
 
     private String content;
+
+    private Date date;
+
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
 
     public String getLink() {
         return link;
