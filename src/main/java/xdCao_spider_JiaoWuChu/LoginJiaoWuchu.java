@@ -1,5 +1,6 @@
 package xdCao_spider_JiaoWuChu;
 
+import com.sun.jndi.ldap.ext.StartTlsResponseImpl;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
@@ -12,6 +13,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -21,7 +23,9 @@ import us.codecraft.webmagic.selector.Html;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by xdcao on 2017/7/10.
@@ -40,7 +44,7 @@ public class LoginJiaoWuchu {
 
         String cookie=login("1601120078","208037");
 
-        getCourse(cookie);
+//        getCourse(cookie);
 
         getInfo(cookie);
 
@@ -52,7 +56,18 @@ public class LoginJiaoWuchu {
         info.setHeader("Cookie",cookie);
         CloseableHttpResponse infoResp = httpClient.execute(info);
         Html infoHtml=new Html(EntityUtils.toString(infoResp.getEntity()),"http://yjsxt.xidian.edu.cn/info/findAllBroadcastMessageAction.do?flag=findAll");
-        System.out.print(infoHtml.toString());
+        String table=infoHtml.xpath("//div[@id='list']/form/table").get();
+        System.out.print(table);
+        List<String> links = infoHtml.xpath("//div[@id='list']/form/span[@class='pagelinks']/a[@title]").links().regex("http://yjsxt\\.xidian\\.edu\\.cn/info/findAllBroadcastMessageAction\\.do.*").all();
+        System.out.println(links);
+        for (String link:links){
+            HttpGet info1=new HttpGet(link);
+            info1.setHeader("Cookie",cookie);
+            CloseableHttpResponse infoResp1 = httpClient.execute(info1);
+            Html infoHtml1=new Html(EntityUtils.toString(infoResp1.getEntity()),"http://yjsxt.xidian.edu.cn/info/findAllBroadcastMessageAction.do?flag=findAll");
+            String table1=infoHtml1.xpath("//div[@id='list']/form/table").get();
+            System.out.print(table1);
+        }
 
     }
 
@@ -67,6 +82,8 @@ public class LoginJiaoWuchu {
         System.out.print(courseHtml.xpath("//div[@id='list']/table").all());
 
     }
+
+
 
 
     private static String login(String username, String password) throws IOException {
@@ -175,10 +192,6 @@ public class LoginJiaoWuchu {
 
             return route+";"+JSESSIONID+" "+big;
         }
-
-
-
-
     }
 
 }

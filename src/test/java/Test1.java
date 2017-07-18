@@ -11,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +40,14 @@ public class Test1 {
         }
 
 
+    }
+
+    @Test
+    public void testList(){
+        List<String> list=new ArrayList<String>();
+        list.add("hah");
+        list.add("hoho");
+        System.out.println(list);
     }
 
 
