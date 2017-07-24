@@ -33,16 +33,28 @@ public class Kedou {
     }
 
     public static List<String> getIndexVideoLinks(Html html){
-        List<String> all = html.xpath("//div[@class='content']/div/div/div/div//a[@href]").links().regex("http://www\\.cao0003\\.com/videos/.*").all();
-//        System.out.print(all);
+        List<String> all = html.xpath("//div[@id='list_videos_most_recent_videos']").links().regex("http://www\\.cao0003\\.com/videos/.*").all();
+        System.out.print(all);
         return all;
     }
 
-    public static boolean getVideo(String videoPage) throws IOException {
+    public static String getNextPage(Html html){
+        String page=html.xpath("//div[@id='list_videos_most_recent_videos']/div/div/ul/li[@class='next']").links().regex("http://www\\.cao0003\\.com/latest.*").get();
+        return page;
+    }
+
+    public static boolean getVideo(String videoPage){
 
         HttpGet httpGet=new HttpGet(videoPage);
-        CloseableHttpResponse response = httpClient.execute(httpGet);
-        Html html=new Html(EntityUtils.toString(response.getEntity()),videoPage);
+        CloseableHttpResponse response = null;
+        Html html=null;
+        try {
+            response = httpClient.execute(httpGet);
+            html=new Html(EntityUtils.toString(response.getEntity()),videoPage);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         String videoLink = html.xpath("//div").links().regex(".*\\.mp4").get();
         if (downLoadVideo(videoLink)){
             return true;
@@ -76,15 +88,28 @@ public class Kedou {
 
 
     public static void main(String[] args) throws IOException {
+
+       getAllVideos(url);
+
+
+    }
+
+    public static void getAllVideos(String url) throws IOException {
         Html page = getPage(url);
         List<String> indexVideoLinks = getIndexVideoLinks(page);
-        for (String videopage:indexVideoLinks){
+        System.out.print("该页共"+indexVideoLinks.size()+"个新视频");
+        for (int i=0;i<indexVideoLinks.size();i++){
+            String videopage=indexVideoLinks.get(i);
             if (getVideo(videopage)){
-                System.out.println("Success!");
+                System.out.println("第"+(i+1)+"个视频下载"+"Success!");
             }else {
-                System.out.println("Failure!");
+                System.out.println("第"+(i+1)+"个视频下载"+"Failure!");
             }
         }
-//        System.out.print(indexVideoLinks.size());
+        System.out.println("该页视频下载完毕");
+        String nextUrl=getNextPage(page);
+        System.out.println("下一页："+nextUrl);
+        getAllVideos(nextUrl);
     }
+
 }
