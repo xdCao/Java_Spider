@@ -56,8 +56,23 @@ public class LoginJiaoWuchu {
         info.setHeader("Cookie",cookie);
         CloseableHttpResponse infoResp = httpClient.execute(info);
         Html infoHtml=new Html(EntityUtils.toString(infoResp.getEntity()),"http://yjsxt.xidian.edu.cn/info/findAllBroadcastMessageAction.do?flag=findAll");
-        String table=infoHtml.xpath("//div[@id='list']/form/table").get();
-        System.out.print(table);
+        List<String> tableRows=infoHtml.xpath("//div[@id='list']/form/table/tbody/tr").all();
+        for (String tableRow:tableRows){
+            LoginInfo loginInfo=new LoginInfo();
+            loginInfo.setNoticer(tableRow.substring(tableRow.indexOf("发布人"),tableRow.indexOf("发布人")+8));
+            System.out.println(loginInfo.getNoticer());
+
+            loginInfo.setDate(tableRow.substring(tableRow.indexOf("<li> 20")+5,tableRow.indexOf("<li> 20")+25));
+            System.out.println(loginInfo.getDate());
+
+            loginInfo.setSubTitle(tableRow.substring(tableRow.indexOf("subtitle")+10,tableRow.lastIndexOf("</span>")));
+            System.out.println(loginInfo.getSubTitle());
+
+            loginInfo.setContent(tableRow.substring(tableRow.indexOf("<hr></li> <li>")+14,tableRow.lastIndexOf("</li> <li>")));
+            System.out.println(loginInfo.getContent());
+
+        }
+
         List<String> links = infoHtml.xpath("//div[@id='list']/form/span[@class='pagelinks']/a[@title]").links().regex("http://yjsxt\\.xidian\\.edu\\.cn/info/findAllBroadcastMessageAction\\.do.*").all();
         System.out.println(links);
         for (String link:links){
@@ -65,8 +80,22 @@ public class LoginJiaoWuchu {
             info1.setHeader("Cookie",cookie);
             CloseableHttpResponse infoResp1 = httpClient.execute(info1);
             Html infoHtml1=new Html(EntityUtils.toString(infoResp1.getEntity()),"http://yjsxt.xidian.edu.cn/info/findAllBroadcastMessageAction.do?flag=findAll");
-            String table1=infoHtml1.xpath("//div[@id='list']/form/table").get();
-            System.out.print(table1);
+            List<String> tableRows1=infoHtml1.xpath("//div[@id='list']/form/table/tbody/tr").all();
+            for (String tableRow:tableRows1){
+                LoginInfo loginInfo=new LoginInfo();
+                loginInfo.setNoticer(tableRow.substring(tableRow.indexOf("发布人"),tableRow.indexOf("发布人")+8));
+                System.out.println(loginInfo.getNoticer());
+
+                loginInfo.setDate(tableRow.substring(tableRow.indexOf("<li> 20")+5,tableRow.indexOf("<li> 20")+25));
+                System.out.println(loginInfo.getDate());
+
+                loginInfo.setSubTitle(tableRow.substring(tableRow.indexOf("subtitle")+10,tableRow.lastIndexOf("</span>")));
+                System.out.println(loginInfo.getSubTitle());
+
+                loginInfo.setContent(tableRow.substring(tableRow.indexOf("<hr></li> <li>")+14,tableRow.lastIndexOf("</li> <li>")));
+                System.out.println(loginInfo.getContent());
+
+            }
         }
 
     }
