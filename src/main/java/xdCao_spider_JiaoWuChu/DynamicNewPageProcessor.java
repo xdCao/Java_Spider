@@ -45,7 +45,8 @@ public class DynamicNewPageProcessor implements PageProcessor {
                 String content= EntityUtils.toString(response.getEntity(),"utf-8");
                 dynamicNews.setContent(content);
                 newsList.add(dynamicNews);
-                System.out.println(dynamicNews.getDate());
+                System.out.println("Title: "+dynamicNews.getTitle()+" , Link: "+dynamicNews.getLink()+
+                        " , Date: "+dynamicNews.getDate());
             }catch (Exception e){
                 e.printStackTrace();
             }
